@@ -1,0 +1,7 @@
+#moviesListRow .col-lg-4{
+    margin-bottom:30px;
+}
+.moviecard:hover {
+   background-color: rgb(200, 247, 247);
+   transform:scaleX(1.02);
+}
