@@ -1,66 +1,80 @@
 "use strict";
 
-let apiUrl = "https://api.themoviedb.org/3/discover/movie?api_key=8489ebb9ba5ed2713e527c0cb438b455"
+const movieCategory = document.getElementById("movieCategory");
+const moviesListRow = document.getElementById("moviesListRow");
+
+let apiUrlForMovieCategory =
+  "https://api.themoviedb.org/3/genre/movie/list?api_key=8489ebb9ba5ed2713e527c0cb438b455&with_genres=10402";
+let apiBaseUrlMoviesList =
+  "https://api.themoviedb.org/3/discover/movie?api_key=8489ebb9ba5ed2713e527c0cb438b455&with_genres=10402";
 
 window.onload = () => {
+  populateMovieCategory;
+};
 
-    const moviesListRow = document.getElementById("moviesListRow");
-
-    console.log("onload");
-
-
-    fetch(apiUrl)
+fetch(apiUrlForMovieCategory)
   .then((response) => response.json())
   .then((data) => {
-    console.log(data.results)
-
-
-    for(let movie of data.results){
-        let moviesColumnElement = createmoviesColumnElement(movie);
-        moviesListRow.appendChild(moviesColumnElement);
+    for (let i = 0; i < data.length; i++) {
+      let moviesCategory = populateMovieCategory(genre);
+      movieCategory.appendChild(moviesCategory);
     }
 
+  function populateMovieCategory(genre) {
+      let option = document.createElement("option");
+      option.textContent = data[i].name;
+      movieCategory.appendChild(option);
+    }
+  });
 
-function createmoviesColumnElement(movie){
-    let movieColumnDiv = document.createElement("div");
+fetch(apiBaseUrlMoviesList)
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data.results);
 
-    movieColumnDiv.className = "col-lg-4";
+    for (let movie of data.results) {
+      let moviesColumnElement = createmoviesColumnElement(movie);
+      moviesListRow.appendChild(moviesColumnElement);
+    }
 
-    let movieCardDiv = document.createElement("div");
-    movieCardDiv.className = "card moviecard";
+    function createmoviesColumnElement(movie) {
+      let movieColumnDiv = document.createElement("div");
 
-    movieColumnDiv.appendChild(movieCardDiv);
+      movieColumnDiv.className = "col-lg-4";
 
-    let movieImage = document.createElement("img");
-    movieImage.src = "https://image.tmdb.org/t/p/w1280/" + movie.backdrop_path;
-    movieImage.className = "card-img-top img";
-    movieImage.alt = movie.name;
+      let movieCardDiv = document.createElement("div");
+      movieCardDiv.className = "card moviecard";
 
-    movieCardDiv.appendChild(movieImage);
+      movieColumnDiv.appendChild(movieCardDiv);
 
-    let cardBodyDiv = document.createElement("div");
-    cardBodyDiv.className = "card-body";
+      let movieImage = document.createElement("img");
+      movieImage.src =
+        "https://image.tmdb.org/t/p/w1280/" + movie.backdrop_path;
+      movieImage.className = "card-img-top img";
+      movieImage.alt = movie.name;
 
-    movieCardDiv.appendChild(cardBodyDiv);
+      movieCardDiv.appendChild(movieImage);
 
-    let movieHeadedTag = document.createElement("h5");
-    movieHeadedTag.innerHTML = movie.title;
+      let cardBodyDiv = document.createElement("div");
+      cardBodyDiv.className = "card-body";
 
-    cardBodyDiv.appendChild(movieHeadedTag);
+      movieCardDiv.appendChild(cardBodyDiv);
 
+      let movieHeadedTag = document.createElement("h5");
+      movieHeadedTag.innerHTML = movie.title;
 
-    let movieReleaseDate = document.createElement("p");
-    movieReleaseDate.className = "card-text";
-    movieReleaseDate.innerText = `Release Date: ${movie.release_date}`
+      cardBodyDiv.appendChild(movieHeadedTag);
 
-    cardBodyDiv.appendChild(movieReleaseDate);
+      let movieReleaseDate = document.createElement("p");
+      movieReleaseDate.className = "card-text";
+      movieReleaseDate.innerText = `Release Date: ${movie.release_date}`;
 
+      cardBodyDiv.appendChild(movieReleaseDate);
 
-    let movieId = document.createElement("p");
-    movieId.innerText = `Movie Id: ${movie.id}`;
-    cardBodyDiv.appendChild(movieId);
+      let movieId = document.createElement("p");
+      movieId.innerText = `Movie Id: ${movie.id}`;
+      cardBodyDiv.appendChild(movieId);
 
-
-    return movieColumnDiv;
-};
-})};
+      return movieColumnDiv;
+    }
+  });

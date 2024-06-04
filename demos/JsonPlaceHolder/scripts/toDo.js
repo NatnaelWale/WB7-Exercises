@@ -14,13 +14,13 @@ const resultsOutput = document.getElementById("resultsOutput");
 function ongetResultsButtonClick() {
   resultsOutput.innerHTML = "";
 
-  console.log("clicked");
+  // console.log("clicked");
 
   const idInput = document.getElementById("idInput");
 
   let actualUrl = apiBaseUrl + idInput.value;
 
-  console.log(actualUrl);
+  // console.log(actualUrl);
 
   fetch(actualUrl)
     .then((response) => response.json())
